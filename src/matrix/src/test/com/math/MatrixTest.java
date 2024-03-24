@@ -5,7 +5,13 @@ import org.junit.Test;
 import main.com.math.Matrix;
 
 public class MatrixTest {
-    
+
+    @Test
+    public void constructor_validation() {
+        constructor_validation_impl(null, "'values' must not be null.");
+        constructor_validation_impl(new int[0][0], "'values' must not be empty.");
+    }
+
     @Test
     public void add_basic() {
         
@@ -312,5 +318,17 @@ public class MatrixTest {
 
         Assert.assertEquals(1, values[0][0]);
         Assert.assertEquals(2, values[1][0]);
+    }
+
+    private static void constructor_validation_impl(int[][] values, String expectedMessage) {
+        try {
+            Matrix m = new Matrix(values);
+            Assert.fail("This line must not be hit. Instead, execution must go to the catch block.");
+
+        } catch (IllegalArgumentException ex) {
+            String s = ex.getMessage();
+            boolean expected = s.startsWith(expectedMessage);
+            Assert.assertTrue(expected);
+        }
     }
 }

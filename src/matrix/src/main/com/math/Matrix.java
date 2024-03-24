@@ -9,6 +9,14 @@ public class Matrix {
 
     // My constructor
     public Matrix(int[][] values) {
+        if (values == null) {
+            throw new IllegalArgumentException("'values' must not be null.");
+        }
+
+        if (values.length == 0 || values[0].length == 0) {
+            throw new IllegalArgumentException("'values' must not be empty.");
+        }
+
         matrixValues = values;
         rows = this.matrixValues.length;
         columns = this.matrixValues[0].length;
