@@ -1,4 +1,8 @@
 package test.com.math;
+import static org.junit.Assert.*;
+
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,7 +18,7 @@ public class MatrixTest {
 
     @Test
     public void add_basic() {
-        
+
         Matrix matrix1 = new Matrix(new int[][]
         {
             { 1, 2 },
@@ -28,7 +32,7 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.add(matrix2);
-        int[][] values = result.getValues();
+        int[][] values = result.get();
 
         Assert.assertEquals(6, values[0][0]);
         Assert.assertEquals(8, values[0][1]);
@@ -99,7 +103,7 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.subtract(matrix2);
-        int[][] values = result.getValues();
+        int[][] values = result.get();
 
         Assert.assertEquals(4, values[0][0]);
         Assert.assertEquals(4, values[0][1]);
@@ -170,7 +174,7 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.multiply(matrix2);
-        int[][] values = result.getValues();
+        int[][] values = result.get();
 
         Assert.assertEquals(19, values[0][0]);
         Assert.assertEquals(22, values[0][1]);
@@ -193,7 +197,7 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.multiply(matrix2);
-        int[][] values = result.getValues();
+        int[][] values = result.get();
 
         Assert.assertEquals(17, values[0][0]);
     }
@@ -213,7 +217,7 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.multiply(matrix2);
-        int[][] values = result.getValues();
+        int[][] values = result.get();
 
         Assert.assertEquals(5, values[0][0]);
         Assert.assertEquals(10, values[0][1]);
@@ -235,7 +239,7 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.multiply(matrix2);
-        int[][] values = result.getValues();
+        int[][] values = result.get();
 
         Assert.assertEquals(5, values[0][0]);
     }
@@ -297,7 +301,7 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.transpose();
-        int[][] values = result.getValues();
+        int[][] values = result.get();
 
         Assert.assertEquals(1, values[0][0]);
         Assert.assertEquals(3, values[0][1]);
@@ -314,10 +318,63 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.transpose();
-        int[][] values = result.getValues();
+        int[][] values = result.get();
 
         Assert.assertEquals(1, values[0][0]);
         Assert.assertEquals(2, values[1][0]);
+    }
+
+    @Test
+    public void getRow() {
+        
+        Matrix matrix1 = new Matrix(new int[][]
+        {
+            { 1, 2, 8, 5 },
+            { 3, 6, 7, 1 }
+        });
+
+        List<Integer> row = matrix1.getRow(0);
+
+        assertEquals(Integer.valueOf(1), row.get(0));
+        assertEquals(Integer.valueOf(2), row.get(1));
+        assertEquals(Integer.valueOf(8), row.get(2));
+        assertEquals(Integer.valueOf(5), row.get(3));
+    }
+
+    @Test
+    public void getColumn() {
+        
+        Matrix matrix1 = new Matrix(new int[][]
+        {
+            { 1, 2 },
+            { 2, 9 },
+            { 8, 4 },
+            { 5, 7 }
+        });
+
+        List<Integer> col = matrix1.getColumn(0);
+        
+        assertEquals(Integer.valueOf(1), col.get(0));
+        assertEquals(Integer.valueOf(2), col.get(1));
+        assertEquals(Integer.valueOf(8), col.get(2));
+        assertEquals(Integer.valueOf(5), col.get(3));
+    }
+
+    @Test
+    public void setValue() {
+        
+        Matrix matrix1 = new Matrix(new int[][]
+        {
+            { 1, 2 },
+            { 2, 9 },
+            { 8, 4 },
+            { 5, 7 }
+        });
+
+        matrix1.setValue(502, 0, 0);
+        int[][] values = matrix1.get();
+        
+        Assert.assertEquals(502, values[0][0]);
     }
 
     private static void constructor_validation_impl(int[][] values, String expectedMessage) {

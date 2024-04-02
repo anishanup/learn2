@@ -1,4 +1,6 @@
 package main.com.math;
+import java.util.ArrayList;
+import java.util.List;
 
 // Matrix class
 public class Matrix {
@@ -22,9 +24,33 @@ public class Matrix {
         columns = this.matrixValues[0].length;
     }
 
+    public int getValue(int rowPos, int colPos) {
+        return this.matrixValues[rowPos][colPos];
+    }
+
+    public List<Integer> getRow(int rowPos) {
+        List<Integer> matrixRow = new ArrayList<Integer>();
+        for (int counter = 0; counter < this.columns; counter++) {
+            matrixRow.add(this.matrixValues[rowPos][counter]);
+        }
+        return matrixRow;
+    }
+
+    public List<Integer> getColumn(int colPos) {
+        List<Integer> matrixRow = new ArrayList<Integer>();
+        for (int counter = 0; counter < this.rows; counter++) {
+            matrixRow.add(this.matrixValues[counter][colPos]);
+        }
+        return matrixRow;
+    }
+
     // Gets array values, returning the array
-    public int[][] getValues() {
+    public int[][] get() {
         return this.matrixValues;
+    }
+
+    public void setValue(int value, int rowPos, int colPos) {
+        this.matrixValues[rowPos][colPos] = value;
     }
 
     // Displaying array values
@@ -126,7 +152,7 @@ public class Matrix {
 
         for (int x = 0; x < this.rows; x++) {
             for (int y = 0; y < this.columns; y++) {
-                item = this.getValues()[x][y];
+                item = this.get()[x][y];
                 newMatrixValues[y][x] = item;
             }
         }
