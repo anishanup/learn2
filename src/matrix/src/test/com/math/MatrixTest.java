@@ -1,4 +1,9 @@
 package test.com.math;
+
+import static org.junit.Assert.*;
+
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,11 +15,27 @@ public class MatrixTest {
     public void constructor_validation() {
         constructor_validation_impl(null, "'values' must not be null.");
         constructor_validation_impl(new int[0][0], "'values' must not be empty.");
+
+        constructor_validation_impl(0, 1, new int[] {}, "'rowCount' must be greater than 0.");
+        constructor_validation_impl(1, 0, new int[] {}, "'columnCount' must be greater than 0.");
+        constructor_validation_impl(1, 1, null, "'values' must not be null.");
+        constructor_validation_impl(1, 1, new int[] { 1, 1 }, "'rowCount' * 'columnCount' must be equal to 'values.length'.");
+
+
+        int[] input = new int[] { 1, 2, 3, 4, 5, 6 };
+        Matrix m = new Matrix(2, 3, input);
+        int[][] values = m.get();
+        Assert.assertEquals(input[0], values[0][0]);
+        Assert.assertEquals(input[1], values[0][1]);
+        Assert.assertEquals(input[2], values[0][2]);
+        Assert.assertEquals(input[3], values[1][0]);
+        Assert.assertEquals(input[4], values[1][1]);
+        Assert.assertEquals(input[5], values[1][2]);
     }
 
     @Test
     public void add_basic() {
-        
+
         Matrix matrix1 = new Matrix(new int[][]
         {
             { 1, 2 },
@@ -28,7 +49,7 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.add(matrix2);
-        int[][] values = result.getValues();
+        int[][] values = result.get();
 
         Assert.assertEquals(6, values[0][0]);
         Assert.assertEquals(8, values[0][1]);
@@ -99,7 +120,7 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.subtract(matrix2);
-        int[][] values = result.getValues();
+        int[][] values = result.get();
 
         Assert.assertEquals(4, values[0][0]);
         Assert.assertEquals(4, values[0][1]);
@@ -170,7 +191,7 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.multiply(matrix2);
-        int[][] values = result.getValues();
+        int[][] values = result.get();
 
         Assert.assertEquals(19, values[0][0]);
         Assert.assertEquals(22, values[0][1]);
@@ -193,7 +214,7 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.multiply(matrix2);
-        int[][] values = result.getValues();
+        int[][] values = result.get();
 
         Assert.assertEquals(17, values[0][0]);
     }
@@ -213,7 +234,7 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.multiply(matrix2);
-        int[][] values = result.getValues();
+        int[][] values = result.get();
 
         Assert.assertEquals(5, values[0][0]);
         Assert.assertEquals(10, values[0][1]);
@@ -235,7 +256,7 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.multiply(matrix2);
-        int[][] values = result.getValues();
+        int[][] values = result.get();
 
         Assert.assertEquals(5, values[0][0]);
     }
@@ -297,7 +318,7 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.transpose();
-        int[][] values = result.getValues();
+        int[][] values = result.get();
 
         Assert.assertEquals(1, values[0][0]);
         Assert.assertEquals(3, values[0][1]);
@@ -314,10 +335,61 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.transpose();
-        int[][] values = result.getValues();
+        int[][] values = result.get();
 
         Assert.assertEquals(1, values[0][0]);
         Assert.assertEquals(2, values[1][0]);
+    }
+
+    @Test
+    public void getRow() {
+        
+        Matrix matrix1 = new Matrix(new int[][]
+        {
+            { 1, 2, 8, 5 },
+            { 3, 6, 7, 1 }
+        });
+
+        List<Integer> row = matrix1.getRow(0);
+
+        assertEquals(Integer.valueOf(1), row.get(0));
+        assertEquals(Integer.valueOf(2), row.get(1));
+        assertEquals(Integer.valueOf(8), row.get(2));
+        assertEquals(Integer.valueOf(5), row.get(3));
+    }
+
+    @Test
+    public void getColumn() {
+        
+        Matrix matrix1 = new Matrix(new int[][]
+        {
+            { 1, 2 },
+            { 2, 9 },
+            { 8, 4 },
+            { 5, 7 }
+        });
+
+        List<Integer> col = matrix1.getColumn(0);
+        
+        assertEquals(Integer.valueOf(1), col.get(0));
+        assertEquals(Integer.valueOf(2), col.get(1));
+        assertEquals(Integer.valueOf(8), col.get(2));
+        assertEquals(Integer.valueOf(5), col.get(3));
+    }
+
+    @Test
+    public void setValue() {
+        
+        Matrix matrix1 = new Matrix(new int[][]
+        {
+            { 1, 2 },
+            { 2, 9 },
+        });
+
+        matrix1.setValue(1, 1, 502);
+        int[][] values = matrix1.get();
+        
+        Assert.assertEquals(502, values[1][1]);
     }
 
     private static void constructor_validation_impl(int[][] values, String expectedMessage) {
@@ -326,9 +398,23 @@ public class MatrixTest {
             Assert.fail("This line must not be hit. Instead, execution must go to the catch block.");
 
         } catch (IllegalArgumentException ex) {
-            String s = ex.getMessage();
-            boolean expected = s.startsWith(expectedMessage);
-            Assert.assertTrue(expected);
+            catchExpectedException(ex, expectedMessage);
         }
+    }
+
+    private static void constructor_validation_impl(int rowCount, int columnCount, int[] values, String expectedMessage) {
+        try {
+            Matrix m = new Matrix(rowCount, columnCount, values);
+            Assert.fail("This line must not be hit. Instead, execution must go to the catch block.");
+
+        } catch (IllegalArgumentException ex) {
+            catchExpectedException(ex, expectedMessage);
+        }
+    }
+
+    private static void catchExpectedException(IllegalArgumentException ex, String expectedMessage) {
+        String s = ex.getMessage();
+        boolean expected = s.startsWith(expectedMessage);
+        Assert.assertTrue(expected);
     }
 }
