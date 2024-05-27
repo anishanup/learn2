@@ -16,6 +16,12 @@ public class MatrixTest {
         constructor_validation_impl(null, "'values' must not be null.");
         constructor_validation_impl(new int[0][0], "'values' must not be empty.");
 
+        constructor_validation_impl(0, 1, new int[] {}, "'rowCount' must be greater than 0.");
+        constructor_validation_impl(1, 0, new int[] {}, "'columnCount' must be greater than 0.");
+        constructor_validation_impl(1, 1, null, "'values' must not be null.");
+        constructor_validation_impl(1, 1, new int[] { 1, 1 }, "'rowCount' * 'columnCount' must be equal to 'values.length'.");
+
+
         int[] input = new int[] { 1, 2, 3, 4, 5, 6 };
         Matrix m = new Matrix(2, 3, input);
         int[][] values = m.get();
@@ -392,9 +398,23 @@ public class MatrixTest {
             Assert.fail("This line must not be hit. Instead, execution must go to the catch block.");
 
         } catch (IllegalArgumentException ex) {
-            String s = ex.getMessage();
-            boolean expected = s.startsWith(expectedMessage);
-            Assert.assertTrue(expected);
+            catchExpectedException(ex, expectedMessage);
         }
+    }
+
+    private static void constructor_validation_impl(int rowCount, int columnCount, int[] values, String expectedMessage) {
+        try {
+            Matrix m = new Matrix(rowCount, columnCount, values);
+            Assert.fail("This line must not be hit. Instead, execution must go to the catch block.");
+
+        } catch (IllegalArgumentException ex) {
+            catchExpectedException(ex, expectedMessage);
+        }
+    }
+
+    private static void catchExpectedException(IllegalArgumentException ex, String expectedMessage) {
+        String s = ex.getMessage();
+        boolean expected = s.startsWith(expectedMessage);
+        Assert.assertTrue(expected);
     }
 }

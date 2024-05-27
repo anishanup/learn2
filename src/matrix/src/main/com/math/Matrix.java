@@ -16,7 +16,6 @@ public class Matrix {
         if (values == null) {
             throw new IllegalArgumentException("'values' must not be null.");
         }
-
         if (values.length == 0 || values[0].length == 0) {
             throw new IllegalArgumentException("'values' must not be empty.");
         }
@@ -30,13 +29,16 @@ public class Matrix {
     // Allows a 1D array to be passed in, which is then converted to a matrix
     public Matrix(int rowCount, int columnCount, int[] values) {
         if (rowCount <= 0) {
-            throw new IllegalArgumentException("'rowCount' must be greater than 0");
+            throw new IllegalArgumentException("'rowCount' must be greater than 0.");
         }
         if (columnCount <= 0) {
-            throw new IllegalArgumentException("'columnCount' must be greater than 0");
+            throw new IllegalArgumentException("'columnCount' must be greater than 0.");
+        }
+        if (values == null) {
+            throw new IllegalArgumentException("'values' must not be null.");
         }
         if (rowCount * columnCount != values.length) {
-            throw new IllegalArgumentException("'rowCount' * 'columnCount' must be equal to 'values.length'");
+            throw new IllegalArgumentException("'rowCount' * 'columnCount' must be equal to 'values.length'.");
         }
 
         int[][] values2D = new int[rowCount][columnCount];
