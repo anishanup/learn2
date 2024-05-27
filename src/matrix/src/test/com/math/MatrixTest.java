@@ -1,4 +1,5 @@
 package test.com.math;
+
 import static org.junit.Assert.*;
 
 import java.util.List;
@@ -14,6 +15,16 @@ public class MatrixTest {
     public void constructor_validation() {
         constructor_validation_impl(null, "'values' must not be null.");
         constructor_validation_impl(new int[0][0], "'values' must not be empty.");
+
+        int[] input = new int[] { 1, 2, 3, 4, 5, 6 };
+        Matrix m = new Matrix(2, 3, input);
+        int[][] values = m.get();
+        Assert.assertEquals(input[0], values[0][0]);
+        Assert.assertEquals(input[1], values[0][1]);
+        Assert.assertEquals(input[2], values[0][2]);
+        Assert.assertEquals(input[3], values[1][0]);
+        Assert.assertEquals(input[4], values[1][1]);
+        Assert.assertEquals(input[5], values[1][2]);
     }
 
     @Test
@@ -367,14 +378,12 @@ public class MatrixTest {
         {
             { 1, 2 },
             { 2, 9 },
-            { 8, 4 },
-            { 5, 7 }
         });
 
-        matrix1.setValue(502, 0, 0);
+        matrix1.setValue(1, 1, 502);
         int[][] values = matrix1.get();
         
-        Assert.assertEquals(502, values[0][0]);
+        Assert.assertEquals(502, values[1][1]);
     }
 
     private static void constructor_validation_impl(int[][] values, String expectedMessage) {
