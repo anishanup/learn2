@@ -35,11 +35,6 @@ public class MatrixTest {
     }
 
     @Test
-    public void squareMatrix_constructor_validation() {
-        squareMatrix_constructor_validation_impl(new int[][] {{ 1, 2, 3 }, { 4, 5, 6 }}, "Number of rows and columns in 'matrixValues' has to be the same.");
-    }
-
-    @Test
     public void add_basic() {
 
         Matrix matrix1 = new Matrix(new int[][]
@@ -397,52 +392,7 @@ public class MatrixTest {
         Assert.assertEquals(502, values[1][1]);
     }
 
-    @Test
-    public void getDeterminant_3x3_basic() {
-        
-        squareMatrix matrix1 = new squareMatrix(new int[][]
-        {
-            { 1, 2, 3 },
-            { 4, 5, 6 },
-            { 7, 8, 9 }
-        });
-
-        int determinant = matrix1.getDeterminant();
-        
-        Assert.assertEquals(determinant, 0);
-    }
-
-    @Test
-    public void getDeterminant_3x3_basic_two() {
-        
-        squareMatrix matrix1 = new squareMatrix(new int[][]
-        {
-            { 3, 5, 1 },
-            { 2, 7, 6 },
-            { 4, 9, 8 }
-        });
-
-        int determinant = matrix1.getDeterminant();
-        
-        Assert.assertEquals(determinant, 36);
-    }
-
-    @Test
-    public void getDeterminant_4x4_basic() {
-        
-        squareMatrix matrix1 = new squareMatrix(new int[][]
-        {
-            { 1, 2, 3, 4 },
-            { 5, 6, 7, 8 },
-            { 9, 10, 11, 12 },
-            { 13, 14, 15, 16 }
-        });
-
-        int determinant = matrix1.getDeterminant();
-        
-        Assert.assertEquals(determinant, 0);
-    }
-
+    
     private static void constructor_validation_impl(int[][] values, String expectedMessage) {
         try {
             Matrix m = new Matrix(values);
@@ -463,17 +413,7 @@ public class MatrixTest {
         }
     }
 
-    private static void squareMatrix_constructor_validation_impl(int[][] values, String expectedMessage) {
-        try {
-            squareMatrix m = new squareMatrix(values);
-            Assert.fail("This line must not be hit. Instead, execution must go to the catch block.");
-
-        } catch (IllegalArgumentException ex) {
-            catchExpectedException(ex, expectedMessage);
-        }
-    }
-
-    private static void catchExpectedException(IllegalArgumentException ex, String expectedMessage) {
+    protected static void catchExpectedException(IllegalArgumentException ex, String expectedMessage) {
         String s = ex.getMessage();
         boolean expected = s.startsWith(expectedMessage);
         Assert.assertTrue(expected);

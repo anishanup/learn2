@@ -102,16 +102,26 @@ public class Matrix {
         this.matrixValues[row][col] = value;
     }
 
-    // Displaying array values.
-    public void display() {
+    // Builds the matrixValues in a string to display.
+    public String toString() {
+
+        StringBuilder builder = new StringBuilder();
 
         for (int x = 0; x < this.rows; x ++) {
             for (int y = 0; y < this.columns; y ++) {
-                System.out.print(this.matrixValues[x][y] + " ");
+                builder.append(this.matrixValues[x][y] + " ");
             }
 
-            System.out.println();
+            builder.append("\n");
         }
+
+        return builder.toString();
+    }
+
+    // Displaying array values.
+    public void display() {
+
+        System.out.println(this.toString());
     }
 
     // Uses the "performOperation" method to subtract to matrices.
