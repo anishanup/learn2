@@ -13,6 +13,7 @@ public class MatrixTest {
 
     @Test
     public void constructor_validation() {
+
         constructor_validation_impl(null, "'values' must not be null.");
         constructor_validation_impl(new int[0][0], "'values' must not be empty.");
 
@@ -388,10 +389,10 @@ public class MatrixTest {
 
         matrix1.setValue(1, 1, 502);
         int[][] values = matrix1.get();
-        
         Assert.assertEquals(502, values[1][1]);
     }
 
+    
     private static void constructor_validation_impl(int[][] values, String expectedMessage) {
         try {
             Matrix m = new Matrix(values);
@@ -412,7 +413,7 @@ public class MatrixTest {
         }
     }
 
-    private static void catchExpectedException(IllegalArgumentException ex, String expectedMessage) {
+    protected static void catchExpectedException(IllegalArgumentException ex, String expectedMessage) {
         String s = ex.getMessage();
         boolean expected = s.startsWith(expectedMessage);
         Assert.assertTrue(expected);
