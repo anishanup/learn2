@@ -2,7 +2,7 @@ package main.com.math;
 
 public class SquareMatrix extends Matrix {
 
-    public SquareMatrix(int[][] values) {
+    public SquareMatrix(double[][] values) {
         super(values);
 
         if (getRowCount() != getColumnCount()) {
@@ -10,9 +10,52 @@ public class SquareMatrix extends Matrix {
         }
     }
 
+    public SquareMatrix(int rowCount, int columnCount) {
+        super(rowCount, columnCount);
+        if (getRowCount() != getColumnCount()) {
+            throw new IllegalArgumentException("Number of rows and columns in 'values' has to be the same.");
+        }
+    }
+
     // Uses the getDeterminantOperation helper method to return the determinant of a matrix.
-    public int getDeterminant() {
+    public double getDeterminant() {
         return getDeterminantOperation(this.get());
+    }
+
+    public SquareMatrix getCofactorMatrix() {
+        return getCofactorMatrixOperation(this.get());
+    }
+
+    public SquareMatrix getAdjointMatrix() {
+        SquareMatrix cofactorMatrix = getCofactorMatrixOperation(this.get());
+        //Matrix adjointMatrixTemp = cofactorMatrix.transpose();
+        SquareMatrix adjointMatrix = new SquareMatrix(cofactorMatrix.transpose().get());
+        
+        return adjointMatrix;
+    }
+
+    public SquareMatrix getInverseMatrix() {
+        double determinant = getDeterminant();
+        SquareMatrix adjointMatrix = getAdjointMatrix();
+        SquareMatrix inverseMatrix = new SquareMatrix(this.getRowCount(), this.getColumnCount());
+
+        if (determinant == 0) {
+            throw new IllegalArgumentException("'determinant' should be a non-zero number.");
+        }
+
+        if (this.getRowCount() == 1) {
+            inverseMatrix.setValue(0, 0, 1 / determinant);
+            return inverseMatrix;
+        }
+
+        for (int r = 0; r < inverseMatrix.getRowCount(); r++) {
+            for (int c = 0; c < inverseMatrix.getColumnCount(); c++) {
+                inverseMatrix.setValue(r, c, adjointMatrix.getValue(r, c) / determinant);
+                inverseMatrix.display();
+            }
+        }
+
+        return inverseMatrix;
     }
 
     // getDeterminant helper method.
@@ -22,7 +65,7 @@ public class SquareMatrix extends Matrix {
 
     // If you don't pass in a square matrix, it will result in an error.
     // If you pass in null, it will result in an error.
-    private static int getDeterminantOperation(int[][] matrixValues) {
+    private static double getDeterminantOperation(double[][] matrixValues) {
 
         int rowCount = matrixValues.length; 
         int colCount = rowCount; // validated in ctor of this class
@@ -35,7 +78,7 @@ public class SquareMatrix extends Matrix {
             return getDeterminantOperation2x2(matrixValues);
         }
 
-        int[][] newMatrixValues = new int[rowCount - 1][colCount - 1];
+        double[][] newMatrixValues = new double[rowCount - 1][colCount - 1];
         int sum = 0;
         
         // 1, 2, 3
@@ -57,15 +100,59 @@ public class SquareMatrix extends Matrix {
             }
 
             int multiplier = a % 2 == 0 ? 1 : -1;
-            int subResult = matrixValues[0][a] * getDeterminantOperation(newMatrixValues);
+            double subResult = matrixValues[0][a] * getDeterminantOperation(newMatrixValues);
             sum += multiplier * subResult;
         }
         
         return sum;
     }
 
-    private static int getDeterminantOperation2x2(int[][] matrixValues) {
-        int det = matrixValues[0][0] * matrixValues[1][1] - matrixValues[0][1] * matrixValues[1][0];
-        return det;
+    private static double getDeterminantOperation2x2(double[][] matrixValues) {
+        double determinant = matrixValues[0][0] * matrixValues[1][1] - matrixValues[0][1] * matrixValues[1][0];
+        return determinant;
     }
+
+    private static SquareMatrix getCofactorMatrixOperation(double[][] matrixValues) {
+        int rowCount = matrixValues.length; 
+        int colCount = rowCount; // validated in ctor of this class
+
+        if (rowCount == 1) {
+            return new SquareMatrix(matrixValues);
+        }
+
+        double[][] newMatrixValues = new double[rowCount - 1][colCount - 1];
+        double[][] result = new double[rowCount][colCount];
+
+        for (int a = 0; a < rowCount; a++) {
+            for (int b = 0; b < colCount; b++) {
+                int x = 0;
+                for (int c = 0; c < rowCount; c++) {
+                    int y = 0;
+                    if (c != a) {
+                        for (int d = 0; d < colCount; d++) {
+                            if (d != b) {
+                                newMatrixValues[x][y] = matrixValues[c][d];
+                                y++;
+                            }
+                        }
+                        x++;
+                    }
+                }
+
+                result[a][b] = Math.pow(-1, a + b) * getDeterminantOperation(newMatrixValues);
+            }
+        }
+
+        SquareMatrix cofactorMatrix = new SquareMatrix(result);
+        return cofactorMatrix;
+    }
+
+
+    // public Matrix getMatrixInverse() {
+    //     if (getDeterminantOperation(this.get()) == 0) {
+    //         throw new IllegalArgumentException("Not possible to evaluate inverse of matrix with determinant of 0");
+    //     }
+
+
+    // }
 }
