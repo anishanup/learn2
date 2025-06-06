@@ -9,9 +9,18 @@ public class MatrixComparator implements Comparator<Matrix> {
         this.tolerance = tolerance;
     }
 
-    // compare method returns 0 if parameters equal and 1 if parameters not equal
+    // compare method returns 0 if matrices equal and 1 if parameters not equal
     @Override
     public int compare(Matrix matrixA, Matrix matrixB) {
+
+        if (matrixA == null && matrixB == null) {
+            return 0;
+        }
+
+        if (matrixA == null || matrixB == null) {
+            return 1;
+        }
+
         double[][] valuesA = matrixA.get();
         double[][] valuesB = matrixB.get();
 
@@ -21,7 +30,10 @@ public class MatrixComparator implements Comparator<Matrix> {
 
         for (int r = 0; r < valuesA.length; r++) {
             for (int c = 0; c < valuesA[0].length; c++) {
-                if (Math.abs(valuesA[r][c] - valuesB[r][c]) > this.tolerance) { // Considers tolerance when checking if values are equal
+
+                double diff = Math.abs(valuesA[r][c] - valuesB[r][c]);
+
+                if (diff > this.tolerance) { 
                     return 1;
                 }
             }

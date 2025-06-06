@@ -128,12 +128,6 @@ public class Matrix {
         return builder.toString();
     }
 
-    // Displaying array values.
-    public void display() {
-
-        System.out.println(this.toString());
-    }
-
     // Uses the "performOperation" method to subtract to matrices.
     public Matrix add(Matrix matrix2) {
         Matrix newM = performOperation(matrix2, "add");

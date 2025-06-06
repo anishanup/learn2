@@ -25,7 +25,6 @@ public class SquareMatrix extends Matrix {
 
     public SquareMatrix getAdjointMatrix() {
         SquareMatrix cofactorMatrix = getCofactorMatrixOperation(this.get());
-        //Matrix adjointMatrixTemp = cofactorMatrix.transpose();
         SquareMatrix adjointMatrix = new SquareMatrix(cofactorMatrix.transpose().get());
         
         return adjointMatrix;
@@ -48,7 +47,6 @@ public class SquareMatrix extends Matrix {
         for (int r = 0; r < inverseMatrix.getRowCount(); r++) {
             for (int c = 0; c < inverseMatrix.getColumnCount(); c++) {
                 inverseMatrix.setValue(r, c, adjointMatrix.getValue(r, c) / determinant);
-                inverseMatrix.display();
             }
         }
 

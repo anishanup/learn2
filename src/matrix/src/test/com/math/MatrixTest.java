@@ -13,13 +13,13 @@ public class MatrixTest {
     @Test
     public void constructor_validation() {
 
-        constructor_validation_impl(null, "'values' must not be null.");
-        constructor_validation_impl(new double[0][0], "'values' must not be empty.");
+        constructorValidationImpl(null, "'values' must not be null.");
+        constructorValidationImpl(new double[0][0], "'values' must not be empty.");
 
-        constructor_validation_impl(0, 1, new double[] {}, "'rowCount' must be greater than 0.");
-        constructor_validation_impl(1, 0, new double[] {}, "'columnCount' must be greater than 0.");
-        constructor_validation_impl(1, 1, null, "'values' must not be null.");
-        constructor_validation_impl(1, 1, new double[] { 1, 1 }, "'rowCount' * 'columnCount' must be equal to 'values.length'.");
+        constructorValidationImpl(0, 1, new double[] {}, "'rowCount' must be greater than 0.");
+        constructorValidationImpl(1, 0, new double[] {}, "'columnCount' must be greater than 0.");
+        constructorValidationImpl(1, 1, null, "'values' must not be null.");
+        constructorValidationImpl(1, 1, new double[] { 1, 1 }, "'rowCount' * 'columnCount' must be equal to 'values.length'.");
         constructorValidationImpl(0, 1, "'rowCount' must be greater than 0.");
         constructorValidationImpl(1, 0, "'columnCount' must be greater than 0.");
 
@@ -33,9 +33,7 @@ public class MatrixTest {
             { input[3], input[4], input[5] },
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(m, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, m, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -61,9 +59,7 @@ public class MatrixTest {
             { 10, 12 },
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, result, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -136,9 +132,7 @@ public class MatrixTest {
             { 4, 4 },
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, result, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -211,9 +205,7 @@ public class MatrixTest {
             { 43, 50 },
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, result, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -237,9 +229,7 @@ public class MatrixTest {
             { 17 }
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, result, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -264,9 +254,7 @@ public class MatrixTest {
             { 6, 12 },
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, result, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -289,9 +277,7 @@ public class MatrixTest {
             { 5 }
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, result, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -358,9 +344,7 @@ public class MatrixTest {
             { 2, 4 },
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, result, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -379,9 +363,7 @@ public class MatrixTest {
             { 2 },
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, result, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -399,9 +381,7 @@ public class MatrixTest {
             { 1 }
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, result, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -413,9 +393,7 @@ public class MatrixTest {
 
         Matrix comparisionMatrix = MatrixFactory.zeroMatrix(2);
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, result, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -467,7 +445,7 @@ public class MatrixTest {
     }
 
     
-    private static void constructor_validation_impl(double[][] values, String expectedMessage) {
+    private static void constructorValidationImpl(double[][] values, String expectedMessage) {
         try {
             Matrix m = new Matrix(values);
             Assert.fail("This line must not be hit. Instead, execution must go to the catch block.");
@@ -477,7 +455,7 @@ public class MatrixTest {
         }
     }
 
-    private static void constructor_validation_impl(int rowCount, int columnCount, double[] values, String expectedMessage) {
+    private static void constructorValidationImpl(int rowCount, int columnCount, double[] values, String expectedMessage) {
         try {
             Matrix m = new Matrix(rowCount, columnCount, values);
             Assert.fail("This line must not be hit. Instead, execution must go to the catch block.");
@@ -494,12 +472,6 @@ public class MatrixTest {
 
         } catch (IllegalArgumentException ex) {
             catchExpectedException(ex, expectedMessage);
-        }
-    }
-
-    private static void assertEqualsImpl(double[] expectedVals, double[] actualVals, double[] deltaVals) {
-        for (int i = 0; i < expectedVals.length; i++) {
-            Assert.assertEquals(expectedVals[i], actualVals[i], deltaVals[i]);
         }
     }
 

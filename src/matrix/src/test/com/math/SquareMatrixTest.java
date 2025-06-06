@@ -73,9 +73,7 @@ public class SquareMatrixTest extends MatrixTest {
             { 1 }
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(cofactorMatrix, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, cofactorMatrix, MatrixConstants.ZERO_DELTA);
     }
 
     @Test 
@@ -93,9 +91,7 @@ public class SquareMatrixTest extends MatrixTest {
             { -2, 1 }
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(cofactorMatrix, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, cofactorMatrix, MatrixConstants.ZERO_DELTA);
     }
 
     @Test 
@@ -110,9 +106,7 @@ public class SquareMatrixTest extends MatrixTest {
             { 0, 0 }
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(cofactorMatrix, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, cofactorMatrix, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -134,9 +128,7 @@ public class SquareMatrixTest extends MatrixTest {
             { -3, 6, -3 }
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(cofactorMatrix, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, cofactorMatrix, MatrixConstants.ZERO_DELTA);
     }
     
     @Test
@@ -152,9 +144,7 @@ public class SquareMatrixTest extends MatrixTest {
             { 1 }
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(adjointMatrix, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, adjointMatrix, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -172,9 +162,7 @@ public class SquareMatrixTest extends MatrixTest {
             { -3, 1 }
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(adjointMatrix, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, adjointMatrix, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -195,9 +183,7 @@ public class SquareMatrixTest extends MatrixTest {
             { -3, 6, -3 }
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
-
-        Assert.assertEquals(comparator.compare(adjointMatrix, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, adjointMatrix, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -214,9 +200,7 @@ public class SquareMatrixTest extends MatrixTest {
             { 1 },
         });
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.IDEAL_DELTA);
-
-        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, result, MatrixConstants.IDEAL_DELTA);
     }
 
     @Test
@@ -245,9 +229,7 @@ public class SquareMatrixTest extends MatrixTest {
 
         Matrix comparisionMatrix = MatrixFactory.identityMatrix(2);
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.IDEAL_DELTA);
-
-        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, result, MatrixConstants.IDEAL_DELTA);
     }
 
     @Test
@@ -263,9 +245,7 @@ public class SquareMatrixTest extends MatrixTest {
 
         Matrix comparisionMatrix = MatrixFactory.identityMatrix(3);
 
-        MatrixComparator comparator = new MatrixComparator(MatrixConstants.IDEAL_DELTA);
-
-        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
+        MatrixAssert.equals(comparisionMatrix, result, MatrixConstants.IDEAL_DELTA);
     }
 
     private static void squareMatrixConstructorValidationImpl(double[][] values, String expectedMessage) {
