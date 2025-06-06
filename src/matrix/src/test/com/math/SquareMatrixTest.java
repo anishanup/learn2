@@ -3,18 +3,15 @@ package test.com.math;
 import org.junit.Assert;
 import org.junit.Test;
 
-import main.com.math.SquareMatrix;
-import main.com.math.Matrix;
+import main.com.math.*;
 
-@SuppressWarnings("deprecation")
 public class SquareMatrixTest extends MatrixTest {
 
     @Test
     public void squareMatrix_constructor_validation() {
-        squareMatrix_constructor_validation_impl(
+        squareMatrixConstructorValidationImpl(
             new double[][] {{ 1, 2 } }, 
             "Number of rows and columns in 'values' has to be the same.");
-        squareMatrix_constructor_validation_impl(4, 5, "Number of rows and columns in 'values' has to be the same.");
     }
 
     @Test
@@ -29,7 +26,7 @@ public class SquareMatrixTest extends MatrixTest {
 
         double determinant = matrix1.getDeterminant();
         
-        Assert.assertEquals(determinant, 0, 0);
+        Assert.assertEquals(determinant, 0, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -44,7 +41,7 @@ public class SquareMatrixTest extends MatrixTest {
 
         double determinant = matrix1.getDeterminant();
         
-        Assert.assertEquals(determinant, 36, 0);
+        Assert.assertEquals(determinant, 36, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -60,7 +57,7 @@ public class SquareMatrixTest extends MatrixTest {
 
         double determinant = matrix1.getDeterminant();
         
-        Assert.assertEquals(determinant, 0, 0);
+        Assert.assertEquals(determinant, 0, MatrixConstants.ZERO_DELTA);
     }
 
     @Test
@@ -70,9 +67,15 @@ public class SquareMatrixTest extends MatrixTest {
         });
 
         SquareMatrix cofactorMatrix = matrix1.getCofactorMatrix();
-        double[][] values = cofactorMatrix.get();
 
-        Assert.assertEquals(values[0][0], 1, 0);
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { 1 }
+        });
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(cofactorMatrix, comparisionMatrix), 0);
     }
 
     @Test 
@@ -83,28 +86,33 @@ public class SquareMatrixTest extends MatrixTest {
         });
 
         SquareMatrix cofactorMatrix = matrix1.getCofactorMatrix();
-        double[][] values = cofactorMatrix.get();
 
-        Assert.assertEquals(values[0][0], 4, 0);
-        Assert.assertEquals(values[0][1], -3, 0);
-        Assert.assertEquals(values[1][0], -2, 0);
-        Assert.assertEquals(values[1][1], 1, 0);
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { 4, -3 },
+            { -2, 1 }
+        });
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(cofactorMatrix, comparisionMatrix), 0);
     }
 
     @Test 
     public void getCofactorMatrix_2x2_zeroes() {
-        SquareMatrix matrix1 = new SquareMatrix(new double[][] {
+        SquareMatrix matrix1 = MatrixFactory.zeroMatrix(2);
+
+        SquareMatrix cofactorMatrix = matrix1.getCofactorMatrix();
+
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
             { 0, 0 },
             { 0, 0 }
         });
 
-        SquareMatrix cofactorMatrix = matrix1.getCofactorMatrix();
-        double[][] values = cofactorMatrix.get();
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
 
-        Assert.assertEquals(values[0][0], 0, 0);
-        Assert.assertEquals(values[0][1], 0, 0);
-        Assert.assertEquals(values[1][0], 0, 0);
-        Assert.assertEquals(values[1][1], 0, 0);
+        Assert.assertEquals(comparator.compare(cofactorMatrix, comparisionMatrix), 0);
     }
 
     @Test
@@ -118,17 +126,17 @@ public class SquareMatrixTest extends MatrixTest {
         });
 
         SquareMatrix cofactorMatrix = matrix1.getCofactorMatrix();
-        double[][] values = cofactorMatrix.get();
-        
-        Assert.assertEquals(-3, values[0][0], 0);
-        Assert.assertEquals(6, values[0][1], 0);
-        Assert.assertEquals(-3, values[0][2], 0);
-        Assert.assertEquals(6, values[1][0], 0);
-        Assert.assertEquals(-12, values[1][1], 0);
-        Assert.assertEquals(6, values[1][2], 0);
-        Assert.assertEquals(-3, values[2][0], 0);
-        Assert.assertEquals(6, values[2][1], 0);
-        Assert.assertEquals(-3, values[2][2], 0);
+
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { -3, 6, -3 },
+            { 6, -12, 6 },
+            { -3, 6, -3 }
+        });
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(cofactorMatrix, comparisionMatrix), 0);
     }
     
     @Test
@@ -137,10 +145,16 @@ public class SquareMatrixTest extends MatrixTest {
             { 1 }
         });
 
-        SquareMatrix adjoinMatrix = matrix1.getAdjointMatrix();
-        double[][] values = adjoinMatrix.get();
+        SquareMatrix adjointMatrix = matrix1.getAdjointMatrix();
 
-        Assert.assertEquals(values[0][0], 1, 0);
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { 1 }
+        });
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(adjointMatrix, comparisionMatrix), 0);
     }
 
     @Test
@@ -151,12 +165,16 @@ public class SquareMatrixTest extends MatrixTest {
         });
 
         SquareMatrix adjointMatrix = matrix1.getAdjointMatrix();
-        double[][] values = adjointMatrix.get();
 
-        Assert.assertEquals(values[0][0], 4, 0);
-        Assert.assertEquals(values[0][1], -2, 0);
-        Assert.assertEquals(values[1][0], -3, 0);
-        Assert.assertEquals(values[1][1], 1, 0);
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { 4, -2 },
+            { -3, 1 }
+        });
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(adjointMatrix, comparisionMatrix), 0);
     }
 
     @Test
@@ -169,17 +187,17 @@ public class SquareMatrixTest extends MatrixTest {
         });
 
         SquareMatrix adjointMatrix = matrix1.getAdjointMatrix();
-        double[][] values = adjointMatrix.get();
-        
-        Assert.assertEquals(-3, values[0][0], 0);
-        Assert.assertEquals(6, values[0][1], 0);
-        Assert.assertEquals(-3, values[0][2], 0);
-        Assert.assertEquals(6, values[1][0], 0);
-        Assert.assertEquals(-12, values[1][1], 0);
-        Assert.assertEquals(6, values[1][2], 0);
-        Assert.assertEquals(-3, values[2][0], 0);
-        Assert.assertEquals(6, values[2][1], 0);
-        Assert.assertEquals(-3, values[2][2], 0);
+
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { -3, 6, -3 },
+            { 6, -12, 6 },
+            { -3, 6, -3 }
+        });
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(adjointMatrix, comparisionMatrix), 0);
     }
 
     @Test
@@ -191,15 +209,18 @@ public class SquareMatrixTest extends MatrixTest {
         SquareMatrix inverseMatrix = matrix1.getInverseMatrix();
         Matrix result = matrix1.multiply(inverseMatrix);
 
-        double[][] values = result.get();
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { 1 },
+        });
 
-        Assert.assertEquals(1, values[0][0], 0.00000001);
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.IDEAL_DELTA);
+
+        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
     }
 
     @Test
     public void getInverseMatrix_1x1_zero() {
-        
-
         try {
             SquareMatrix matrix1 = new SquareMatrix(new double[][] {
                 { 0 }
@@ -208,7 +229,7 @@ public class SquareMatrixTest extends MatrixTest {
             Assert.fail("This line must not be hit. Instead, execution must go to the catch block.");
 
         } catch (IllegalArgumentException ex) {
-            catchExpectedException(ex, "'determinant' should be a non-zero number.");
+            catchExpectedException(ex, "For computing the inverse, the 'determinant' should be a non-zero number.");
         }
     }
 
@@ -222,12 +243,11 @@ public class SquareMatrixTest extends MatrixTest {
         SquareMatrix inverseMatrix = matrix1.getInverseMatrix();
         Matrix result = matrix1.multiply(inverseMatrix);
 
-        double[][] values = result.get();
+        Matrix comparisionMatrix = MatrixFactory.identityMatrix(2);
 
-        Assert.assertEquals(1, values[0][0], 0.00000001);
-        Assert.assertEquals(0, values[0][1], 0.00000001);
-        Assert.assertEquals(0, values[1][0], 0.00000001);
-        Assert.assertEquals(1, values[1][1], 0.00000001);
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.IDEAL_DELTA);
+
+        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
     }
 
     @Test
@@ -241,32 +261,16 @@ public class SquareMatrixTest extends MatrixTest {
         SquareMatrix inverseMatrix = matrix1.getInverseMatrix();
         Matrix result = matrix1.multiply(inverseMatrix);
 
-        double[][] values = result.get();
+        Matrix comparisionMatrix = MatrixFactory.identityMatrix(3);
 
-        Assert.assertEquals(1, values[0][0], 0.00000001);
-        Assert.assertEquals(0, values[0][1], 0.00000001);
-        Assert.assertEquals(0, values[0][2], 0.00000001);
-        Assert.assertEquals(0, values[1][0], 0.00000001);
-        Assert.assertEquals(1, values[1][1], 0.00000001);
-        Assert.assertEquals(0, values[1][2], 0.00000001);
-        Assert.assertEquals(0, values[2][0], 0.00000001);
-        Assert.assertEquals(0, values[2][1], 0.00000001);
-        Assert.assertEquals(1, values[2][2], 0.00000001);
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.IDEAL_DELTA);
+
+        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
     }
 
-    private static void squareMatrix_constructor_validation_impl(double[][] values, String expectedMessage) {
+    private static void squareMatrixConstructorValidationImpl(double[][] values, String expectedMessage) {
         try {
             SquareMatrix m = new SquareMatrix(values);
-            Assert.fail("This line must not be hit. Instead, execution must go to the catch block.");
-
-        } catch (IllegalArgumentException ex) {
-            catchExpectedException(ex, expectedMessage);
-        }
-    }
-
-    private static void squareMatrix_constructor_validation_impl(int rows, int columns, String expectedMessage) {
-        try {
-            SquareMatrix m = new SquareMatrix(rows, columns);
             Assert.fail("This line must not be hit. Instead, execution must go to the catch block.");
 
         } catch (IllegalArgumentException ex) {

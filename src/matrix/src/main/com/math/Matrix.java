@@ -1,8 +1,5 @@
 package main.com.math;
 
-import java.util.ArrayList;
-import java.util.List;
-
 // This is a library, a user imports this library 
 // so that they can use the methods in this class.
 public class Matrix {
@@ -77,22 +74,22 @@ public class Matrix {
 
     // Method to return any row from the matrix that the user asks for.
     // Asks for the row's position in the matrix.
-    public List<Double> getRow(int rowPos) {
-        List<Double> matrixRow = new ArrayList<Double>();
-        for (int counter = 0; counter < this.columns; counter++) {
-            matrixRow.add(this.matrixValues[rowPos][counter]);
+    public double[] getRow(int rowPos) {
+        double[] matrixRow = new double[this.columns];
+        for (int counter = 0; counter < matrixRow.length; counter++) {
+            matrixRow[counter] = this.matrixValues[rowPos][counter];
         }
         return matrixRow;
     }
 
     // Method to return any column from the matrix that the user asks for.
     // Asks for the column's position in the matrix.
-    public List<Double> getColumn(int colPos) {
-        List<Double> matrixRow = new ArrayList<Double>();
-        for (int counter = 0; counter < this.rows; counter++) {
-            matrixRow.add(this.matrixValues[counter][colPos]);
+    public double[] getColumn(int colPos) {
+        double[] matrixColumn = new double[this.rows];
+        for (int counter = 0; counter < matrixColumn.length; counter++) {
+            matrixColumn[counter] = this.matrixValues[counter][colPos];
         }
-        return matrixRow;
+        return matrixColumn;
     }
 
     // Gets array values, returning the array.

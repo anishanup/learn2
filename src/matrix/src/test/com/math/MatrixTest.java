@@ -1,16 +1,13 @@
 package test.com.math;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 import main.com.math.Matrix;
-import main.com.math.SquareMatrix;
+import main.com.math.MatrixComparator;
+import main.com.math.MatrixConstants;
+import main.com.math.MatrixFactory;
 
-@SuppressWarnings("deprecation")
 public class MatrixTest {
 
     @Test
@@ -23,19 +20,22 @@ public class MatrixTest {
         constructor_validation_impl(1, 0, new double[] {}, "'columnCount' must be greater than 0.");
         constructor_validation_impl(1, 1, null, "'values' must not be null.");
         constructor_validation_impl(1, 1, new double[] { 1, 1 }, "'rowCount' * 'columnCount' must be equal to 'values.length'.");
-        constructor_validation_impl(0, 1, "'rowCount' must be greater than 0.");
-        constructor_validation_impl(1, 0, "'columnCount' must be greater than 0.");
+        constructorValidationImpl(0, 1, "'rowCount' must be greater than 0.");
+        constructorValidationImpl(1, 0, "'columnCount' must be greater than 0.");
 
 
         double[] input = new double[] { 1, 2, 3, 4, 5, 6 };
         Matrix m = new Matrix(2, 3, input);
-        double[][] values = m.get();
-        Assert.assertEquals(input[0], values[0][0], 0);
-        Assert.assertEquals(input[1], values[0][1], 0);
-        Assert.assertEquals(input[2], values[0][2], 0);
-        Assert.assertEquals(input[3], values[1][0], 0);
-        Assert.assertEquals(input[4], values[1][1], 0);
-        Assert.assertEquals(input[5], values[1][2], 0);
+
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { input[0], input[1], input[2] },
+            { input[3], input[4], input[5] },
+        });
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(m, comparisionMatrix), 0);
     }
 
     @Test
@@ -54,12 +54,16 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.add(matrix2);
-        double[][] values = result.get();
 
-        Assert.assertEquals(6, values[0][0], 0);
-        Assert.assertEquals(8, values[0][1], 0);
-        Assert.assertEquals(10, values[1][0], 0);
-        Assert.assertEquals(12, values[1][1], 0);
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { 6, 8 },
+            { 10, 12 },
+        });
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
     }
 
     @Test
@@ -125,12 +129,16 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.subtract(matrix2);
-        double[][] values = result.get();
 
-        Assert.assertEquals(4, values[0][0], 0);
-        Assert.assertEquals(4, values[0][1], 0);
-        Assert.assertEquals(4, values[1][0], 0);
-        Assert.assertEquals(4, values[1][1], 0);
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { 4, 4 },
+            { 4, 4 },
+        });
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
     }
 
     @Test
@@ -196,12 +204,16 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.multiply(matrix2);
-        double[][] values = result.get();
 
-        Assert.assertEquals(19, values[0][0], 0);
-        Assert.assertEquals(22, values[0][1], 0);
-        Assert.assertEquals(43, values[1][0], 0);
-        Assert.assertEquals(50, values[1][1], 0);
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { 19, 22 },
+            { 43, 50 },
+        });
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
     }
 
     @Test
@@ -219,9 +231,15 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.multiply(matrix2);
-        double[][] values = result.get();
 
-        Assert.assertEquals(17, values[0][0], 0);
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { 17 }
+        });
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
     }
 
     @Test
@@ -239,12 +257,16 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.multiply(matrix2);
-        double[][] values = result.get();
 
-        Assert.assertEquals(5, values[0][0], 0);
-        Assert.assertEquals(10, values[0][1], 0);
-        Assert.assertEquals(6, values[1][0], 0);
-        Assert.assertEquals(12, values[1][1], 0);
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { 5, 10 },
+            { 6, 12 },
+        });
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
     }
 
     @Test
@@ -261,9 +283,15 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.multiply(matrix2);
-        double[][] values = result.get();
 
-        Assert.assertEquals(5, values[0][0], 0);
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { 5 }
+        });
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
     }
 
     @Test
@@ -323,12 +351,16 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.transpose();
-        double[][] values = result.get();
 
-        Assert.assertEquals(1, values[0][0], 0);
-        Assert.assertEquals(3, values[0][1], 0);
-        Assert.assertEquals(2, values[1][0], 0);
-        Assert.assertEquals(4, values[1][1], 0);
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { 1, 3 },
+            { 2, 4 },
+        });
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
     }
 
     @Test
@@ -340,10 +372,16 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.transpose();
-        double[][] values = result.get();
 
-        Assert.assertEquals(1, values[0][0], 0);
-        Assert.assertEquals(2, values[1][0], 0);
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { 1 },
+            { 2 },
+        });
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
     }
 
     @Test
@@ -355,27 +393,29 @@ public class MatrixTest {
         });
 
         Matrix result = matrix1.transpose();
-        double[][] values = result.get();
 
-        Assert.assertEquals(1, values[0][0], 0);
+        Matrix comparisionMatrix = new Matrix(new double[][]
+        {
+            { 1 }
+        });
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
     }
 
     @Test
     public void transpose_basic_zeroes() {
         
-        Matrix matrix1 = new Matrix(new double[][]
-        {
-            { 0, 0 },
-            { 0, 0 }
-        });
+        Matrix matrix1 = MatrixFactory.zeroMatrix(2);
 
         Matrix result = matrix1.transpose();
-        double[][] values = result.get();
 
-        Assert.assertEquals(0, values[0][0], 0);
-        Assert.assertEquals(0, values[0][1], 0);
-        Assert.assertEquals(0, values[1][0], 0);
-        Assert.assertEquals(0, values[1][1], 0);
+        Matrix comparisionMatrix = MatrixFactory.zeroMatrix(2);
+
+        MatrixComparator comparator = new MatrixComparator(MatrixConstants.ZERO_DELTA);
+
+        Assert.assertEquals(comparator.compare(result, comparisionMatrix), 0);
     }
 
     @Test
@@ -383,16 +423,15 @@ public class MatrixTest {
         
         Matrix matrix1 = new Matrix(new double[][]
         {
-            { 1, 2, 8, 5 },
+            { 0, 1, 2, 3 },
             { 3, 6, 7, 1 }
         });
 
-        List<Double> row = matrix1.getRow(0);
+        double[] row = matrix1.getRow(0);
 
-        assertEquals(Double.valueOf(1), row.get(0));
-        assertEquals(Double.valueOf(2), row.get(1));
-        assertEquals(Double.valueOf(8), row.get(2));
-        assertEquals(Double.valueOf(5), row.get(3));
+        for (int i = 0; i < matrix1.get()[0].length; i++) {
+            Assert.assertEquals(i, row[i], MatrixConstants.ZERO_DELTA);
+        }
     }
 
     @Test
@@ -400,18 +439,17 @@ public class MatrixTest {
         
         Matrix matrix1 = new Matrix(new double[][]
         {
-            { 1, 2 },
-            { 2, 9 },
-            { 8, 4 },
-            { 5, 7 }
+            { 0, 2 },
+            { 1, 9 },
+            { 2, 4 },
+            { 3, 7 }
         });
 
-        List<Double> col = matrix1.getColumn(0);
-        
-        assertEquals(Double.valueOf(1), col.get(0));
-        assertEquals(Double.valueOf(2), col.get(1));
-        assertEquals(Double.valueOf(8), col.get(2));
-        assertEquals(Double.valueOf(5), col.get(3));
+        double[] col = matrix1.getColumn(0);
+
+        for (int i = 0; i < matrix1.get()[0].length; i++) {
+            Assert.assertEquals(i, col[i], MatrixConstants.ZERO_DELTA);
+        }
     }
 
     @Test
@@ -425,7 +463,7 @@ public class MatrixTest {
 
         matrix1.setValue(1, 1, 502);
         double[][] values = matrix1.get();
-        Assert.assertEquals(502, values[1][1], 0);
+        Assert.assertEquals(502, values[1][1], MatrixConstants.ZERO_DELTA);
     }
 
     
@@ -449,13 +487,19 @@ public class MatrixTest {
         }
     }
 
-    private static void constructor_validation_impl(int rows, int columns, String expectedMessage) {
+    private static void constructorValidationImpl(int rows, int columns, String expectedMessage) {
         try {
-            SquareMatrix m = new SquareMatrix(rows, columns);
+            Matrix m = new Matrix(rows, columns);
             Assert.fail("This line must not be hit. Instead, execution must go to the catch block.");
 
         } catch (IllegalArgumentException ex) {
             catchExpectedException(ex, expectedMessage);
+        }
+    }
+
+    private static void assertEqualsImpl(double[] expectedVals, double[] actualVals, double[] deltaVals) {
+        for (int i = 0; i < expectedVals.length; i++) {
+            Assert.assertEquals(expectedVals[i], actualVals[i], deltaVals[i]);
         }
     }
 

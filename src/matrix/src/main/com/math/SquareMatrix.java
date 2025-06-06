@@ -10,11 +10,8 @@ public class SquareMatrix extends Matrix {
         }
     }
 
-    public SquareMatrix(int rowCount, int columnCount) {
-        super(rowCount, columnCount);
-        if (getRowCount() != getColumnCount()) {
-            throw new IllegalArgumentException("Number of rows and columns in 'values' has to be the same.");
-        }
+    public SquareMatrix(int rowOrColumnCount) {
+        super(rowOrColumnCount, rowOrColumnCount);
     }
 
     // Uses the getDeterminantOperation helper method to return the determinant of a matrix.
@@ -36,12 +33,12 @@ public class SquareMatrix extends Matrix {
 
     public SquareMatrix getInverseMatrix() {
         double determinant = getDeterminant();
-        SquareMatrix adjointMatrix = getAdjointMatrix();
-        SquareMatrix inverseMatrix = new SquareMatrix(this.getRowCount(), this.getColumnCount());
-
         if (determinant == 0) {
-            throw new IllegalArgumentException("'determinant' should be a non-zero number.");
+            throw new IllegalArgumentException("For computing the inverse, the 'determinant' should be a non-zero number.");
         }
+
+        SquareMatrix adjointMatrix = getAdjointMatrix();
+        SquareMatrix inverseMatrix = new SquareMatrix(this.getRowCount());
 
         if (this.getRowCount() == 1) {
             inverseMatrix.setValue(0, 0, 1 / determinant);
@@ -146,13 +143,4 @@ public class SquareMatrix extends Matrix {
         SquareMatrix cofactorMatrix = new SquareMatrix(result);
         return cofactorMatrix;
     }
-
-
-    // public Matrix getMatrixInverse() {
-    //     if (getDeterminantOperation(this.get()) == 0) {
-    //         throw new IllegalArgumentException("Not possible to evaluate inverse of matrix with determinant of 0");
-    //     }
-
-
-    // }
 }
