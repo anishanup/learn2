@@ -1,18 +1,15 @@
 package main.com.math;
 
-import java.util.ArrayList;
-import java.util.List;
-
 // This is a library, a user imports this library 
 // so that they can use the methods in this class.
 public class Matrix {
     
     // This is the array that is used for the object creation above.
-    private int[][] matrixValues;
+    private double[][] matrixValues;
     private int rows;
     private int columns;
 
-    public Matrix(int[][] values) {
+    public Matrix(double[][] values) {
         if (values == null) {
             throw new IllegalArgumentException("'values' must not be null.");
         }
@@ -27,7 +24,7 @@ public class Matrix {
     
     // Overloaded constructor for convenience.
     // Allows a 1D array to be passed in, which is then converted to a matrix.
-    public Matrix(int rowCount, int columnCount, int[] values) {
+    public Matrix(int rowCount, int columnCount, double[] values) {
         if (rowCount <= 0) {
             throw new IllegalArgumentException("'rowCount' must be greater than 0.");
         }
@@ -41,11 +38,11 @@ public class Matrix {
             throw new IllegalArgumentException("'rowCount' * 'columnCount' must be equal to 'values.length'.");
         }
 
-        int[][] values2D = new int[rowCount][columnCount];
+        double[][] values2D = new double[rowCount][columnCount];
         int index = 0;
         
-        for (int i = 0; i < rowCount; i ++) {
-            for (int j = 0; j < columnCount; j ++) {
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < columnCount; j++) {
                 values2D[i][j] = values[index];
                 index++;
             }
@@ -56,34 +53,47 @@ public class Matrix {
         this.matrixValues = values2D;
     }
 
+    public Matrix (int rowCount, int columnCount) {
+        if (rowCount <= 0) {
+            throw new IllegalArgumentException("'rowCount' must be greater than 0.");
+        }
+        if (columnCount <= 0) {
+            throw new IllegalArgumentException("'columnCount' must be greater than 0.");
+        }
+
+        this.matrixValues = new double[rowCount][columnCount];
+        this.rows = rowCount;
+        this.columns = columnCount;
+    }
+
     // Method to return any value from the matrix that the user asks for.
     // Asks for the value's position in the matrix.
-    public int getValue(int rowPos, int colPos) {
+    public double getValue(int rowPos, int colPos) {
         return this.matrixValues[rowPos][colPos];
     }
 
     // Method to return any row from the matrix that the user asks for.
     // Asks for the row's position in the matrix.
-    public List<Integer> getRow(int rowPos) {
-        List<Integer> matrixRow = new ArrayList<Integer>();
-        for (int counter = 0; counter < this.columns; counter++) {
-            matrixRow.add(this.matrixValues[rowPos][counter]);
+    public double[] getRow(int rowPos) {
+        double[] matrixRow = new double[this.columns];
+        for (int counter = 0; counter < matrixRow.length; counter++) {
+            matrixRow[counter] = this.matrixValues[rowPos][counter];
         }
         return matrixRow;
     }
 
     // Method to return any column from the matrix that the user asks for.
     // Asks for the column's position in the matrix.
-    public List<Integer> getColumn(int colPos) {
-        List<Integer> matrixRow = new ArrayList<Integer>();
-        for (int counter = 0; counter < this.rows; counter++) {
-            matrixRow.add(this.matrixValues[counter][colPos]);
+    public double[] getColumn(int colPos) {
+        double[] matrixColumn = new double[this.rows];
+        for (int counter = 0; counter < matrixColumn.length; counter++) {
+            matrixColumn[counter] = this.matrixValues[counter][colPos];
         }
-        return matrixRow;
+        return matrixColumn;
     }
 
     // Gets array values, returning the array.
-    public int[][] get() {
+    public double[][] get() {
         return this.matrixValues;
     }
     
@@ -98,7 +108,7 @@ public class Matrix {
     }
     // Changes a value in the matrix.
     // Asks for new value and where to put it in the matrix (0 based indexing).
-    public void setValue(int row, int col, int value) {
+    public void setValue(int row, int col, double value) {
         this.matrixValues[row][col] = value;
     }
 
@@ -116,12 +126,6 @@ public class Matrix {
         }
 
         return builder.toString();
-    }
-
-    // Displaying array values.
-    public void display() {
-
-        System.out.println(this.toString());
     }
 
     // Uses the "performOperation" method to subtract to matrices.
@@ -151,10 +155,10 @@ public class Matrix {
             throw new IllegalArgumentException("The columns of the first matrix must match the rows of the second matrix.");
         }
 
-        int[][] newMatrixValues = new int[this.rows][other.columns];
+        double[][] newMatrixValues = new double[this.rows][other.columns];
         Matrix newMatrix = new Matrix(newMatrixValues);
-        int item;
-        int sum;
+        double item;
+        double sum;
 
         for (int x = 0; x < this.rows; x ++) {
             for (int y = 0; y < other.columns; y ++) {
@@ -172,9 +176,9 @@ public class Matrix {
 
     // Makes the columns of the matrix into rows and vice versa.
     public Matrix transpose() {
-        int[][] newMatrixValues = new int[this.columns][this.rows];
+        double[][] newMatrixValues = new double[this.columns][this.rows];
         Matrix newMatrix = new Matrix(newMatrixValues);
-        int item;
+        double item;
 
         for (int x = 0; x < this.rows; x++) {
             for (int y = 0; y < this.columns; y++) {
@@ -185,6 +189,8 @@ public class Matrix {
 
         return newMatrix;
     }
+
+
 
     // Add and Subtract methods helper method.
     // This method takes in a matrix, uses its values to perform an operation, then returns a new matrix.
@@ -207,12 +213,12 @@ public class Matrix {
             throw new IllegalArgumentException(s);
         }
 
-        int[][] newMatrixValues = new int[this.rows][this.columns];
+        double[][] newMatrixValues = new double[this.rows][this.columns];
         Matrix newMatrix = new Matrix(newMatrixValues);
 
         for (int x = 0; x < this.rows; x ++) {
             for (int y = 0; y < this.columns; y ++) {
-                int item;
+                double item;
                 if (operation == "add") {
                     item = this.matrixValues[x][y] + other.matrixValues[x][y];
                 }
